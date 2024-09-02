@@ -194,12 +194,3 @@ def get_future_price():
     price = price.replace(',', '')
     # print(f"Current price: {price}")
     return price
-
-# while True:
-#     print(float(get_future_price()))
-
-
-
-# open_position_quantity_loaded('LONG')
-# time.sleep(1)
-# set_quantity(90)
