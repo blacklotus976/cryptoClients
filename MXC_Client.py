@@ -1,6 +1,5 @@
 import datetime
 
-import pymexc
 import hmac
 import time
 import requests
@@ -8,10 +7,10 @@ import hashlib
 from typing import Union, Literal
 from urllib.parse import urlencode
 
-from pymexc import futures
-api_key =  'mx0vglMW5u8Yf5jHIO'  #'mx0vgl3sDp9U8muwWv '
-secret_key = '99bbfc24a05d421d9214552f60127ed7' #'2a7b1039d87e4113a1bb3dbc405479be'
-# client = futures.HTTP(api_key, secret_key)
+
+api_key =  'YOUR_API_KEY'  
+secret_key = 'YOUR_SECRET_KEY' 
+
 
 import json
 
@@ -46,52 +45,6 @@ class mexcClient:
         return signature
 
     """ALL ENDPOINTS SHOULD BE CALLED THROUGH THIS -- SIGNS THE REQUEST"""
-
-    def call_copied(self, method: Union[Literal["GET"], Literal["POST"], Literal["PUT"], Literal["DELETE"]], router: str,
-             *args, **kwargs) -> dict:
-        """
-        Makes a request to the specified HTTP method and router using the provided arguments.
-
-        :param method: A string that represents the HTTP method(GET, POST, PUT, or DELETE) to be used.
-        :type method: str
-        :param router: A string that represents the API endpoint to be called.
-        :type router: str
-        :param *args: Variable length argument list.
-        :type *args: list
-        :param **kwargs: Arbitrary keyword arguments.
-        :type **kwargs: dict
-
-        :return: A dictionary containing the JSON response of the request.
-        """
-
-        if not router.startswith("/"):
-            router = f"/{router}"
-
-        # clear None values
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
-
-        headers = {}
-        timestamp = str(int(time.time() * 1000))
-        headers['Request-Time'] = timestamp
-        headers['ApiKey'] = self.api_key
-
-        if method in ["GET", "DELETE"]:
-            if 'params' in kwargs:
-                param_string = "&".join(f"{k}={v}" for k, v in sorted(kwargs['params'].items()))
-            else:
-                param_string = ""
-        elif method in ["POST", "PUT"]:
-            if 'json' in kwargs:
-                param_string = json.dumps(kwargs['json'], separators=(',', ':'))
-                headers["Content-Type"] = "application/json"
-            else:
-                param_string = ""
-
-        headers['Signature'] = self.sign(timestamp, param_string)
-        kwargs['headers'] = headers
-
-        response = self.requests.request(method, f"{self.base_url}{router}", *args, **kwargs)
-        return response.json()
 
     def call(self, method: Union[Literal["GET"], Literal["POST"], Literal["PUT"], Literal["DELETE"]], router: str,
              *args, **kwargs) -> dict:
@@ -298,30 +251,3 @@ class mexcClient:
             }
 
 
-# mexcApi = mexcClient(api_key, secret_key)
-# print(mexcApi.orderbook('AEVO_USDT',100))
-# print(mexcApi.history_positions())
-#
-# print("TESTING PRICE RETRIEVAL FUNCTION (FOR FUTURES ENDPOINT)")
-# print(mexcApi.get_future_price('AEVO_USDT'))
-#
-# print("\nTESTING ALL ASSETS WALLET ENDPOINT")
-# print(mexcApi.see_wallet())
-#
-# print("\nTESTING SPECIFIC ASSET WALLET ENDPOINT (USDT)")
-# print(mexcApi.see_wallet_on_symbol('USDT'))
-#
-# print("\nTESTING LEVERAGE RETRIEVAL ON COIN (AEVO)")
-# print(mexcApi.get_leverage('AEVO_USDT'))
-#
-# print("\nTESTING OPEN NEW POSITION ON COIN (AEVO)")
-# #print(client.order(symbol='AEVO_USDT',price = 0.9,vol=1, side=1, type = 5, open_type=2))
-# #print(client.order('AEVO_USDT',0.9, 1, 1,5,2))
-# print(mexcApi.open_market('AEVO_USDT', 1,1))
-#
-# print("\nTESTING RISK LEVEL CHANGE (ACTUALLY JUST GENERAL POST REQUESTS)")
-# print(mexcApi.change_risk_level())
-# print(client.change_risk_level())
-#
-# print("\nTESTING LEVERAGE CHANGE ON COIN (AEVO)")
-# print(mexcApi.set_leverage('AEVO_USDT',20))
