@@ -336,15 +336,3 @@ class BybitClient:
         return annualized_volatility
 
 
-#bybit_api_spy = BybitClient(api_key="LBVZOwpLoPyVe1iyya", api_secret="qJyRmW2DBfmrgkVk5YymcudZgDUArW3klILz")
-# print(bybit_api_spy.get_volume('BTCUSDT', category='spot'))
-# print(bybit_api_spy.get_volume('BTCUSD', category='linear'))
-# print(bybit_api_spy.get_volatility('ETH/USD'))
-
-
-# while True:
-#    print(bybit_api_spy.orderbook(symbol='BTC-27JUN25-160000-P', category='option', limit=25))
-# btc_options = bybit_api_spy.get_options_with_date(desired_date='2SEP24')
-# print(f"len of available options : {len(btc_options)} and options {btc_options}")
-# for option in btc_options:
-#     print(bybit_api_spy.orderbook(symbol=option, category='option', limit=25))
